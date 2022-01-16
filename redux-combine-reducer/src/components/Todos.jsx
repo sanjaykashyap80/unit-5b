@@ -6,19 +6,15 @@ import {
   addTodoError,
   addTodoLoading,
   addTodoSuccess,
-  getData,
-  // getTodoError,
-  // getTodoLoading,
-  // getTodoSuccess
+  getTodoError,
+  getTodoLoading,
+  getTodoSuccess
 } from "../features/Todos/actions";
 
 export const Todos = () => {
   const [text, setText] = useState("");
   const { loading, todos, error } = useSelector(
     (state) => ({
-      // loading: state.todosState.loading,
-      // todos: state.todosState.todos,
-      // error: state.todosState.error
       loading: state.todosState.loading,
       todos: state.todosState.todos,
       error: state.todosState.error
@@ -37,16 +33,15 @@ export const Todos = () => {
   }, []);
 
   async function getTodos() {
-    dispatch(getData())
-    // try {
-    //   dispatch(getTodoLoading());
-    //   const data = await fetch("http://localhost:3004/todos").then((d) =>
-    //     d.json()
-    //   );
-    //   dispatch(getTodoSuccess(data));
-    // } catch (err) {
-    //   dispatch(getTodoError(err));
-    // }
+    try {
+      dispatch(getTodoLoading());
+      const data = await fetch("http://localhost:3004/todos").then((d) =>
+        d.json()
+      );
+      dispatch(getTodoSuccess(data));
+    } catch (err) {
+      dispatch(getTodoError(err));
+    }
   }
 
   const addTodo = () => {
@@ -62,13 +57,12 @@ export const Todos = () => {
       .then((d) => d.json())
       .then((res) => {
         // success
-        dispatch(addTodoSuccess(res));
-        // getTodos();
-        // dispatch(getData());
+        dispatch(addTodoSuccess());
+        getTodos();
       })
       .catch((err) => {
         // error
-        dispatch(addTodoError(err));
+        dispatch(addTodoError());
       });
     // dispatch(addTodo(text));
   };
@@ -111,12 +105,9 @@ export const Todos = () => {
       >
         Add Todo
       </button>
-      {console.log(todos)}
       {todos.map((e, i) => (
-        // <div key={i}>
-        <div>
-          {e.title} - {e.status ? "Done" : "Not Done"}
-          {/* {e.title} - {e.status ? "Done" : i > 0 ? "Not Done" : ""} */}
+        <div key={i}>
+          {e.title} - {e.status ? "Done" : "Not DOne"}
         </div>
       ))}
     </div>
